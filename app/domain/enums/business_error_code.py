@@ -9,6 +9,7 @@ class BusinessErrorCode(Enum):
     JOB_001 = ("JOB_001", "Job not found")
     JOB_002 = ("JOB_002", "Invalid job state")
     JOB_003 = ("JOB_003", "Batch processing failed")
+    JOB_004 = ("JOB_004", "Invalid progress out of range [0, total]")
 
     AUTH_001 = ("AUTH_001", "Unauthorized")
     RATE_001 = ("RATE_001", "Rate limit exceeded")
