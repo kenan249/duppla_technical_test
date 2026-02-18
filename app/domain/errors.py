@@ -1,0 +1,1 @@
+# DomainError, InvalidTransition, NotFound, etc
