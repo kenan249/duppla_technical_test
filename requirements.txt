@@ -1,1 +1,6 @@
-# requirements.txt
+fastapi
+uvicorn[standard]
+sqlalchemy
+python-dotenv
+greenlet
+asyncpg
