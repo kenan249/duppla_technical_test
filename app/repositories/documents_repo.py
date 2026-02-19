@@ -3,7 +3,7 @@ from uuid import UUID
 from typing import Optional
 
 from sqlalchemy import select, func
-from sqlalchemy.ext.asyncio import AsyncSession
+from app.db.engine import AsyncSessionLocal
 
 from app.db.models import Document as DocumentModel
 from app.domain.models.document import Document
@@ -20,8 +20,8 @@ class DocumentFilters:
 
 
 class DocumentsRepository:
-    def __init__(self, session: AsyncSession):
-        self.session = session
+    def __init__(self):
+        self.session = AsyncSessionLocal()
 
     def _to_domain(self, model: DocumentModel) -> Document:
         return Document(
