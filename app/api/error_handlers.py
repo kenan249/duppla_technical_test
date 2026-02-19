@@ -25,11 +25,9 @@ def _error_payload(
 def _domain_to_http(exc: DomainError) -> tuple[int, Dict[str, Any]]:
     status_code = 400
 
-    # Try to extract structured info from DomainError
     code = exc.code or "GEN_000"
     message = exc.message or str(exc) or "Unknown error"
 
-    # Map domain error -> HTTP status
     if isinstance(exc, NotFoundError):
         status_code = 404
     elif isinstance(exc, ValidationError):

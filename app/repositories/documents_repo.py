@@ -95,8 +95,8 @@ class DocumentsRepository:
             stmt = stmt.where(DocumentModel.document_type == filters.document_type)
             count_stmt = count_stmt.where(DocumentModel.document_type == filters.document_type)
         if filters.status:
-            stmt = stmt.where(DocumentModel.status == filters.status.value)
-            count_stmt = count_stmt.where(DocumentModel.status == filters.status.value)
+            stmt = stmt.where(DocumentModel.status == filters.status)
+            count_stmt = count_stmt.where(DocumentModel.status == filters.status)
         if filters.min_amount is not None:
             stmt = stmt.where(DocumentModel.amount >= filters.min_amount)
             count_stmt = count_stmt.where(DocumentModel.amount >= filters.min_amount)
