@@ -29,7 +29,7 @@ class JobsRepository:
     def _to_model(self, job: Job) -> JobModel:
         return JobModel(
             id=job.id,
-            status=job.status.value,
+            status=job.status,
             total=job.total,
             processed=job.processed,
             requested_ids=job.requested_ids,
@@ -41,8 +41,9 @@ class JobsRepository:
     async def create(self, job: Job) -> Job:
         model = self._to_model(job)
         self.session.add(model)
-        await self.session.commit()
+        await self.session.flush()
         await self.session.refresh(model)
+        await self.session.commit()
         return self._to_domain(model)
 
     async def get_by_id(self, job_id: UUID) -> Optional[Job]:
@@ -60,7 +61,7 @@ class JobsRepository:
         if model is None:
             raise ValueError(f"Job {job.id} not found")
         
-        model.status = job.status.value
+        model.status = job.status
         model.total = job.total
         model.processed = job.processed
         model.requested_ids = job.requested_ids

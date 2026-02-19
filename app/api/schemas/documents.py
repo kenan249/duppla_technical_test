@@ -45,7 +45,7 @@ class DocumentListResponse(BaseModel):
 
 class BatchProcessRequest(BaseModel):
     document_ids: List[UUID]
-    target_status: DocumentStatus
+    target_status: str
 
 
 class BatchProcessResponse(BaseModel):

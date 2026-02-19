@@ -1,1 +1,0 @@
-# entrypoint del worker RQ

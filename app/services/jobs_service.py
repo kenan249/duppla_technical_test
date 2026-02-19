@@ -1,5 +1,5 @@
 from uuid import UUID, uuid4
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 
 from app.repositories.jobs_repo import JobsRepository
@@ -13,7 +13,7 @@ class JobsService:
         self.jobs_repo = JobsRepository()
 
     async def create_job(self, document_ids: List[str]) -> Job:
-        now = datetime.now(datetime.timezone.utc)
+        now = datetime.now(timezone.utc)
         job = Job(
             id=uuid4(),
             status=JobStatus.QUEUED,

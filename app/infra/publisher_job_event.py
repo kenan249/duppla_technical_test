@@ -1,8 +1,9 @@
 import json
-from typing import Any
-from app.infra.redis_client import RedisClient
 
-class PublisherJobAdapter:
+from app.infra.redis_client import RedisClient
+from app.worker.events.job_event import JobEvent
+
+class PublisherJobEventAdapter:
 
     def __init__(self):
         self.redis = RedisClient().get_redis_sync()
@@ -11,7 +12,8 @@ class PublisherJobAdapter:
         return f"job:{job_id}"
 
 
-    def publish_job_event(self, job_id: str, payload: dict[str, Any]) -> None:
+    def publish(self, job_id: str, event: JobEvent) -> None:
         channel = self.job_channel(job_id)
+        payload = event.to_dict()
         payload.setdefault("job_id", job_id)
         self.redis.publish(channel, json.dumps(payload))

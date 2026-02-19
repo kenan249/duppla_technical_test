@@ -14,6 +14,12 @@ class RedisClient:
             self.REDIS_URL,
             decode_responses=True,
         )
+    
+    def get_redis_rq_sync(self) -> redis.Redis:
+        return redis.Redis.from_url(
+            self.REDIS_URL,
+            decode_responses=False,
+        )
 
 
     def get_redis_async(self) -> redis_async.Redis:

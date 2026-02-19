@@ -5,6 +5,7 @@ class BusinessErrorCode(Enum):
     DOC_001 = ("DOC_001", "Document not found")
     DOC_002 = ("DOC_002", "Invalid document status transition")
     DOC_003 = ("DOC_003", "Invalid document payload")
+    DOC_004 = ("DOC_004", "Document status invalid for operation")
 
     JOB_001 = ("JOB_001", "Job not found")
     JOB_002 = ("JOB_002", "Invalid job state")

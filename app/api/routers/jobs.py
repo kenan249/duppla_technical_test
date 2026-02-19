@@ -9,7 +9,7 @@ from app.repositories.jobs_repo import JobsRepository
 
 class JobsController:
     def __init__(self):
-        self.service = JobsService(jobs_repo=JobsRepository())
+        self.service = JobsService()
         self.router = APIRouter(prefix="/jobs", tags=["jobs"])
         
         self.router.add_api_route("/{job_id}", self.get, methods=["GET"], response_model=JobResponse)

@@ -24,23 +24,25 @@ class DocumentsRepository:
         self.session = AsyncSessionLocal()
 
     def _to_domain(self, model: DocumentModel) -> Document:
+        # Convierte el status de la BD (minúsculas) al Enum Python (mayúsculas)
         return Document(
             id=model.id,
             type=model.document_type,
             amount=model.amount,
             status=DocumentStatus(model.status),
             created_at=model.created_at,
-            metadata=model.metadata or {},
+            metadata=model.metadata_dic or {},
         )
 
     def _to_model(self, document: Document) -> DocumentModel:
+        # Guarda el status en minúsculas en la BD
         return DocumentModel(
             id=document.id,
             document_type=document.type,
             amount=document.amount,
-            status=document.status.value,
+            status=document.status,
             created_at=document.created_at,
-            metadata=document.metadata,
+            metadata_dic=document.metadata,
         )
 
     async def create(self, document: Document) -> Document:
@@ -48,6 +50,7 @@ class DocumentsRepository:
         self.session.add(model)
         await self.session.flush()
         await self.session.refresh(model)
+        await self.session.commit()
         return self._to_domain(model)
 
     async def get_by_id(self, document_id: UUID) -> Optional[Document]:
@@ -70,6 +73,7 @@ class DocumentsRepository:
         
         await self.session.flush()
         await self.session.refresh(model)
+        await self.session.commit()
         return self._to_domain(model)
 
     async def delete(self, document_id: UUID) -> None:
@@ -79,6 +83,7 @@ class DocumentsRepository:
         if model:
             await self.session.delete(model)
             await self.session.flush()
+            await self.session.commit()
 
     async def page(
         self, filters: DocumentFilters, page: int = 1, page_size: int = 10

@@ -1,5 +1,5 @@
 from uuid import UUID, uuid4
-from datetime import datetime
+from datetime import datetime,timezone
 from decimal import Decimal
 from typing import Optional, List
 
@@ -21,7 +21,7 @@ class DocumentsService:
         amount: Decimal,
         metadata: Optional[dict] = None,
     ) -> Document:
-        now = datetime.now(datetime.timezone.utc)
+        now = datetime.now(timezone.utc)
         document = Document(
             id=uuid4(),
             type=document_type,

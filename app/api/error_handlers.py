@@ -18,7 +18,7 @@ def _error_payload(
     code: str,
     message: str
 ) -> Dict[str, Any]:
-    payload: Dict[str, Any] = {"error": {"code": code, "message": message}}
+    payload: Dict[str, Any] = {"code": code, "message": message}
     return payload
 
 
@@ -26,9 +26,8 @@ def _domain_to_http(exc: DomainError) -> tuple[int, Dict[str, Any]]:
     status_code = 400
 
     # Try to extract structured info from DomainError
-    code = getattr(getattr(exc, "error_code", None), "code", None) or "GEN_000"
-    message = getattr(getattr(exc, "error_code", None), "message", None) or str(exc) or "Unknown error"
-    details = getattr(exc, "details", None)
+    code = exc.code or "GEN_000"
+    message = exc.message or str(exc) or "Unknown error"
 
     # Map domain error -> HTTP status
     if isinstance(exc, NotFoundError):
@@ -38,7 +37,7 @@ def _domain_to_http(exc: DomainError) -> tuple[int, Dict[str, Any]]:
     elif isinstance(exc, ServiceError):
         status_code = 500
 
-    return status_code, _error_payload(code=code, message=message, details=details)
+    return status_code, _error_payload(code=code, message=message)
 
 
 def register_exception_handlers(app: FastAPI) -> None:

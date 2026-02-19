@@ -28,8 +28,7 @@ print(f"Attempting to connect to: {HOST}")
 # Para asyncpg, el SSL se configura a través de connect_args
 engine = create_async_engine(
     DATABASE_URL,
-    pool_pre_ping=True,
-    connect_args={"ssl": "require"},
+    pool_pre_ping=True
 )
 
 AsyncSessionLocal = sessionmaker(

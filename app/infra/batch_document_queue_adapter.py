@@ -11,10 +11,5 @@ class BatchDocumentQueueAdapter:
         self.queue = Queue(DOCUMENT_BATCH_QUEUE_NAME, connection=self.redis_conn)
 
     def enqueue(self, job_id: str, documents_id: list[str], target_status: str) -> str:
-        payload = {
-            "job_id": job_id,
-            "documents_id": documents_id,
-            "target_status": target_status,
-        }
-        rq_job = self.queue.enqueue("app.worker.tasks.process_batch.process_document_batch", payload)
+        rq_job = self.queue.enqueue("app.worker.tasks.document_batch_task.process_document_batch", job_id, documents_id, target_status)
         return rq_job.id
