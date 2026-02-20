@@ -1,8 +1,10 @@
+import logging
 from uuid import UUID, uuid4
 from datetime import datetime,timezone
 from decimal import Decimal
 from typing import Optional, List
 
+from app.domain.enums.business_error_code import BusinessErrorCode
 from app.repositories.documents_repo import DocumentsRepository, DocumentFilters
 from app.domain.models.document import Document
 from app.domain.models.page import Page
@@ -10,6 +12,7 @@ from app.domain.models.batch_result import BatchResult
 from app.domain.enums.document_status import DocumentStatus
 from app.domain.errors import NotFoundError, ValidationError
 
+logger = logging.getLogger(__name__)
 
 class DocumentsService:
     def __init__(self):
@@ -35,10 +38,8 @@ class DocumentsService:
     async def get_document(self, document_id: UUID) -> Document:
         document = await self.documents_repo.get_by_id(document_id)
         if document is None:
-            raise NotFoundError(
-                message=f"Document {document_id} not found",
-                code="DOCUMENT_NOT_FOUND"
-            )
+            logger.error(f"Document {document_id} not found")
+            raise NotFoundError(BusinessErrorCode.DOC_001)
         return document
 
     async def update_document(

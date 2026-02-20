@@ -151,13 +151,11 @@ class DocumentBatchProcessor:
         except NotFoundError:
             counters.failed += 1
             reason = f"Document not found: {document_id}"
-            logger.warning(reason)
             return "failed", reason
 
         except ValidationError as e:
             counters.failed += 1
             reason = f"Invalid transition: {getattr(e, 'message', str(e))}"
-            logger.warning(reason)
             return "failed", reason
 
         except Exception as e:

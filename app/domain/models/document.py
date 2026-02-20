@@ -1,4 +1,5 @@
 from dataclasses import dataclass, replace
+import logging
 from uuid import UUID
 from datetime import datetime
 from decimal import Decimal
@@ -9,7 +10,7 @@ from app.domain.enums.business_error_code import BusinessErrorCode as business_e
 from app.domain.state_machine import can_transition
 from app.domain.errors import ValidationError
 
-
+logger = logging.getLogger(__name__)
 @dataclass
 class Document:
     id: UUID
@@ -37,6 +38,7 @@ class Document:
 
     def change_status(self, new_status: DocumentStatus) -> "Document":
         if not self.can_transition_to(new_status):
+            logger.error(f"Invalid status transition from {self.status.value} to {new_status.value} for document {self.id}")
             raise ValidationError(business_error_code=business_error_code.DOC_002)
         return replace(self, status=new_status)
 
